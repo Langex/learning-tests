@@ -21,5 +21,20 @@ class TestEmployees(unittest.TestCase):
 		self.command = 'employees'
 		self.url = 'http://{}/api/{}'.format(self.host, self.command)
 
+	def test_employees_creation(self):
+		random_first_name = "{}".format(choice(FIRST_NAME))
+		random_last_name = "{}".format(choice(LAST_NAME))
+		description = "{}".format(choice(DESCRIPTION))
+		kwargs = {'firstName': random_first_name, 'lastName': random_last_name, 'description': description}
+		status_employees, text = self._create_employees(**kwargs)
+		self.assertEqual(status_employees, ADDED)
+
+	def _create_employees(self, firstName, lastName, description, headers=DEFAULT_HEADER):
+		_headers = {'content-type': headers}
+		_payload = json.dumps({'firstName': firstName, 'lastName': lastName, 'description': description})
+		_response = requests.post(self.url, data=_payload, headers=_headers)
+		return _response.status_code, _response.json()
+
+
 if __name__ == '__main__':
-    unittest.main(verbosity=2)
+	unittest.main(verbosity=2)

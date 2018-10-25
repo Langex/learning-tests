@@ -29,12 +29,57 @@ class TestEmployees(unittest.TestCase):
 		status_employees, text = self._create_employees(**kwargs)
 		self.assertEqual(status_employees, ADDED)
 
+	def test_delete(self):
+		rezult = self._get_employees()
+		print('rezult: "' + str(rezult) + '"')
+		identificator = choice(rezult)
+		print('identificator: "' + str(identificator) + '"')
+		status_code, text = self._delete_employees(self.url, identificator)
+		self.assertEqual(status_code, SUCCESS)
+		self.assertNotIn(identificator, self._get_employees('href'))
+
 	def _create_employees(self, firstName, lastName, description, headers=DEFAULT_HEADER):
 		_headers = {'content-type': headers}
 		_payload = json.dumps({'firstName': firstName, 'lastName': lastName, 'description': description})
 		_response = requests.post(self.url, data=_payload, headers=_headers)
 		return _response.status_code, _response.json()
 
+	def _delete_employees(self, identificator):
+		_response = requests.delete("{}/{}".format(self.url, identificator))
+		return _response.status_code, _response.json()
+
+	def _get_employees(self, identificator=None):
+		_url = self.url
+		if identificator:
+			_url = "{}/{}".format(self.url, identificator)
+		print('_url: "' + str(_url) + '"')
+		_response = requests.get(_url)
+		return _response.status_code, _response.json()
+
+	def _get_employees_id(self):
+		_url = self.url
+		_response = requests.get(_url)
+		return _response.status_employees, _response.json()
+
+
+	def _get_ids(self, msg):
+		req = json.loads(msg)
+		ids = []
+
+		for el in req['_embedded']['employees']:
+
+			href = el['_links']['self']['href']
+			ident = href.split('/')[-1]
+			ids.append(ident)
+			
+			print('href: ' + str(ident))
+			print('ids: ' + str(ids))
+
+		return ids
+
+	# def _get_list_of(self, key):
+	# 	_, data = self._get_employees()
+	# 	return map(lambda x: x.get(key), data.get('employees'))
 
 if __name__ == '__main__':
 	unittest.main(verbosity=2)

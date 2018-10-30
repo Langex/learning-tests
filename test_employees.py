@@ -21,7 +21,7 @@ class TestEmployees(unittest.TestCase): # проверяется работа к
 		self.command = 'employees'
 		self.url = 'http://{}/api/{}'.format(self.host, self.command)
 
-	def test_employees_creation(self):# функция для для создания сотрудника
+	def test_employees_creation(self):# функция для выбора сотрудника 
 		random_first_name = "{}".format(choice(FIRST_NAME))# переменная которая выбирает случайное имя
 		random_last_name = "{}".format(choice(LAST_NAME))# переменная которая выбирает случайное фамилии
 		description = "{}".format(choice(DESCRIPTION))# переменная которая выбирает вид деятельности
@@ -38,7 +38,7 @@ class TestEmployees(unittest.TestCase): # проверяется работа к
 		# self.assertEqual(status_code, SUCCESS)
 		# self.assertNotIn(identificator, self._get_employees('href'))
 
-	def _create_employees(self, firstName, lastName, description, headers=DEFAULT_HEADER):
+	def _create_employees(self, firstName, lastName, description, headers=DEFAULT_HEADER):# функция для создания сотрудника
 		_headers = {'content-type': headers}
 		_payload = json.dumps({'firstName': firstName, 'lastName': lastName, 'description': description})
 		_response = requests.post(self.url, data=_payload, headers=_headers)

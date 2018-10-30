@@ -44,7 +44,7 @@ class TestEmployees(unittest.TestCase): # проверяется работа к
 		_response = requests.post(self.url, data=_payload, headers=_headers)
 		return _response.status_code, _response.json()
 
-	def _delete_employees(self, identificator):
+	def _delete_employees(self, identificator):# функция для удаления сотрудника
 		_response = requests.delete("{}/{}".format(self.url, identificator))
 		return _response.status_code, _response.json()
 

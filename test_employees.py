@@ -15,9 +15,9 @@ DESCRIPTION = ('ring bearer', 'burglar', 'wizard', 'gardener', 'pony rider', 'pi
 
 class TestEmployees(unittest.TestCase): # проверяется работа компонентов тестируемой программы (метод, класс и функции)
 
-	def __init__(self, *a, **kw): # функция 
+	def __init__(self, *a, **kw): # функция и метод __init__
 		super(TestEmployees, self).__init__(*a, **kw)
-		self.host = 'localhost:8080'
+		self.host = 'localhost:8080' # подключение к серверу localhost
 		self.command = 'employees'
 		self.url = 'http://{}/api/{}'.format(self.host, self.command)
 

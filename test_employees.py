@@ -6,6 +6,7 @@ from random import choice # модуль предоставляет функци
 DEFAULT_HEADER = 'application/json' # HTTP-ответ
 
 SUCCESS = 200 # код состояния HTTP OK («хорошо»)
+SUCCESS_DELETE = 204
 INCORRECT_HEADER = 400 # код состояния HTTP Bad Request («плохой, неверный запрос»)
 ADDED = 201 # код состояния HTTP Created («создано»)
 
@@ -30,12 +31,13 @@ class TestEmployees(unittest.TestCase): # проверяется работа к
 		self.assertEqual(status_employees, ADDED)#
 
 	def test_delete(self):# функция для удаления сотрудника
-		rezult = self._get_employees()
-		# print('rezult: "' + str(rezult) + '"')
-		# identificator = choice(rezult)
-		# print('identificator: "' + str(identificator) + '"')
+		status_code, json = self._get_employees()
+		print('rezult: "' + str(json) + '"')
+		ids = self._get_ids(json)
+		identificator = choice(ids)
+		print('identificator: "' + str(identificator) + '"')
 		# status_code, text = self._delete_employees(identificator)
-		# self.assertEqual(status_code, SUCCESS)
+		# self.assertEqual(status_code, SUCCESS_DELETE)
 		# self.assertNotIn(identificator, self._get_employees('href'))
 
 	def _create_employees(self, firstName, lastName, description, headers=DEFAULT_HEADER):# функция для создания сотрудника
@@ -52,8 +54,10 @@ class TestEmployees(unittest.TestCase): # проверяется работа к
 		_url = self.url
 		if identificator:
 			_url = "{}/{}".format(self.url, identificator)
-		print('_url: "' + str(_url) + '"')
+		print('\n_url: "' + str(_url) + '"')
 		_response = requests.get(_url)
+		print('_response.status_code: ' + str(_response.status_code))
+		print('_response.json(): ' + str(_response.json()))
 		return _response.status_code, _response.json()
 
 	def _get_employees_id(self):
@@ -77,9 +81,9 @@ class TestEmployees(unittest.TestCase): # проверяется работа к
 
 		return ids
 
-	# def _get_list_of(self, key):
-	# 	_, data = self._get_employees()
-	# 	return map(lambda x: x.get(key), data.get('employees'))
+	def _get_list_of(self, key):
+	 	_, data = self._get_employees()
+	 	return map(lambda x: x.get(key), data.get('employees'))
 
 if __name__ == '__main__':
 	unittest.main(verbosity=2)

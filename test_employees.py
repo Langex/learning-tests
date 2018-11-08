@@ -31,11 +31,11 @@ class TestEmployees(unittest.TestCase): # проверяется работа к
 		self.assertEqual(status_employees, ADDED)#
 
 	def test_delete(self):# функция для удаления сотрудника
-		status_code, json = self._get_employees()
-		print('rezult: "' + str(json) + '"')
-		ids = self._get_ids(ids)
+		status_code, json = self._get_employees('8')
+		#print('rezult: "' + str(json) + '"')
+		ids = self._get_ids(json)
 		identificator = choice(ids)
-		print('identificator: "' + str(identificator) + '"')
+		#print('identificator: "' + str(identificator) + '"')
 		status_code, text = self._delete_employees(identificator)
 		self.assertEqual(status_code, SUCCESS_DELETE)
 		self.assertNotIn(identificator, self._get_employees('href'))
@@ -81,9 +81,9 @@ class TestEmployees(unittest.TestCase): # проверяется работа к
 
 		return ids
 
-	def _get_list_of(self, key):
-	 	_, data = self._get_employees()
-	 	return map(lambda x: x.get(key), data.get('employees'))
+	# def _get_list_of(self, key):
+	#  	_, data = self._get_employees()
+	#  	return map(lambda x: x.get(key), data.get('employees'))
 
 if __name__ == '__main__':
 	unittest.main(verbosity=2)

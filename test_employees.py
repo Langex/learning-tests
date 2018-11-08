@@ -33,12 +33,12 @@ class TestEmployees(unittest.TestCase): # проверяется работа к
 	def test_delete(self):# функция для удаления сотрудника
 		status_code, json = self._get_employees()
 		print('rezult: "' + str(json) + '"')
-		ids = self._get_ids(json)
+		ids = self._get_ids(ids)
 		identificator = choice(ids)
 		print('identificator: "' + str(identificator) + '"')
-		# status_code, text = self._delete_employees(identificator)
-		# self.assertEqual(status_code, SUCCESS_DELETE)
-		# self.assertNotIn(identificator, self._get_employees('href'))
+		status_code, text = self._delete_employees(identificator)
+		self.assertEqual(status_code, SUCCESS_DELETE)
+		self.assertNotIn(identificator, self._get_employees('href'))
 
 	def _create_employees(self, firstName, lastName, description, headers=DEFAULT_HEADER):# функция для создания сотрудника
 		_headers = {'content-type': headers}
